@@ -137,7 +137,7 @@ st.title("Satış Ekibi Telaffuz Eğitimi")
 
 # --- GENEL SİSTEM YÖNERGESİ ---
 st.markdown("""
-> 📋 **Sertifikasyon Akış Kılavuzu:** > 1. Önce mevcut markanın **Doğru Okunuşunu Seslendir** butonuna basarak sistemi aktifleştirin ve telaffuzu dinleyin.
+> 📋 **Bilgilendirme:** > 1. Önce mevcut markanın **Doğru Okunuşunu Seslendir** butonuna basarak sistemi aktifleştirin ve telaffuzu dinleyin.
 > 2. Ardından açılacak olan **Kendinizi Test Edin** alanındaki mikrofon simgesine basarak markanın adını söyleyin.
 > 3. %80 başarı oranını yakaladığınızda belirecek olan **Sonraki Markaya Geç** butonuyla ilerleyin.
 """)
