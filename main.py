@@ -3,6 +3,7 @@ from gtts import gTTS
 import os
 import speech_recognition as sr
 import io
+from difflib import SequenceMatcher
 
 # --- 1. TÜM MARKA LİSTESİ VE DİLLERİ ---
 BRANDS = {
@@ -184,23 +185,18 @@ if not st.session_state.audio_listened:
 else:
     st.write("Aşağıdaki mikrofon alanını kullanarak sesinizi kaydedin:")
     
-    # RESMİ STREAMLIT SES GİRİŞ BİLEŞENİ (Uyumsuzluk sorunlarını kökten çözer)
-    # Kullanıcı kaydı durdurduğu an doğrudan bir dosya nesnesi döner.
     audio_file_input = st.audio_input(
         label="Sesinizi kaydedin", 
         key=f"audio_input_{st.session_state.current_index}"
     )
 
     if audio_file_input is not None:
-        # Gelen veriyi okuyoruz
-        audio_bytes = audio_file_input.read()
-        
         r = sr.Recognizer()
-        audio_data = io.BytesIO(audio_bytes)
         
-        # --- BU BLOĞU YENİSİYLE DEĞİŞTİRİN ---
+        # Streamlit'in audio_input bileşeninden gelen byte verisini Wav formatına hazırlıyoruz
+        audio_data = io.BytesIO(audio_file_input.read())
+        
         with sr.AudioFile(audio_data) as source:
-            # Kulaklık cızırtılarında takılmaya sebep olan adjust_for_ambient_noise satırını kaldırdık
             audio = r.record(source)
             
             try:
@@ -211,8 +207,12 @@ else:
                 clean_user_said = user_said.lower().replace(".", "").replace(" ", "")
                 clean_brand_name = selected_brand_name.lower().replace(".", "").replace(" ", "")
                 
-                if clean_user_said == clean_brand_name:
-                    st.success("🎉 Harika! Doğru telaffuz.")
+                # İki metin arasındaki benzerlik oranını hesaplıyoruz
+                similarity_ratio = SequenceMatcher(None, clean_user_said, clean_brand_name).ratio()
+                
+                # %75 ve üzeri benzerliği personelin akıcılığı için yeterli görüp DOĞRU kabul ediyoruz
+                if similarity_ratio >= 0.75:
+                    st.success(f"🎉 Harika! Doğru telaffuz. (Benzerlik Skoru: %{int(similarity_ratio*100)})")
                     
                     if st.button("➡️ Sonraki Markaya Geç"):
                         if st.session_state.current_index + 1 < total_brands:
@@ -223,11 +223,10 @@ else:
                             st.session_state.test_completed = True
                         st.rerun()
                 else:
-                    st.error("❌ Eşleşmedi! Doğru yapana kadar bu markayı geçemezsiniz. Lütfen tekrar dinleyip tekrar deneyin.")
+                    st.error(f"❌ Eşleşmedi! Doğru yapana kadar bu markayı geçemezsiniz. Lütfen tekrar deneyin. (Benzerlik: %{int(similarity_ratio*100)})")
                     st.caption(f"Beklenen: {selected_brand_name} | Algılanan: {user_said}")
                     
             except sr.UnknownValueError:
-                # Ses tamamen boş veya anlaşılamaz geldiyse kullanıcının ne algılandığını görmesi için küçük bir iyileştirme
                 st.warning("Ses net anlaşılamadı. Lütfen mikrofona yakın şekilde, kelimeyi tane tane ve biraz daha yüksek sesle tekrar söyleyin.")
             except sr.RequestError as e:
                 st.error(f"Sistem hatası (Bağlantı sorunu): {e}")
