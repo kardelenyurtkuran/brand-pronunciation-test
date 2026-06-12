@@ -198,13 +198,13 @@ else:
         r = sr.Recognizer()
         audio_data = io.BytesIO(audio_bytes)
         
+        # --- BU BLOĞU YENİSİYLE DEĞİŞTİRİN ---
         with sr.AudioFile(audio_data) as source:
-            # Arka plan gürültü ayarı
-            r.adjust_for_ambient_noise(source, duration=0.1)
+            # Kulaklık cızırtılarında takılmaya sebep olan adjust_for_ambient_noise satırını kaldırdık
             audio = r.record(source)
             
             try:
-                # Google Speech Recognition servisine gönderiyoruz
+                # Tanıma motorunu çalıştırıyoruz
                 user_said = r.recognize_google(audio, language=brand_info["lang"])
                 st.info(f"Sizin Söylediğiniz: **{user_said}**")
                 
@@ -227,6 +227,7 @@ else:
                     st.caption(f"Beklenen: {selected_brand_name} | Algılanan: {user_said}")
                     
             except sr.UnknownValueError:
-                st.warning("Ses net anlaşılamadı. Lütfen mikrofona yakın şekilde tekrar söyleyin.")
+                # Ses tamamen boş veya anlaşılamaz geldiyse kullanıcının ne algılandığını görmesi için küçük bir iyileştirme
+                st.warning("Ses net anlaşılamadı. Lütfen mikrofona yakın şekilde, kelimeyi tane tane ve biraz daha yüksek sesle tekrar söyleyin.")
             except sr.RequestError as e:
                 st.error(f"Sistem hatası (Bağlantı sorunu): {e}")
