@@ -170,7 +170,7 @@ with right_col:
     st.subheader(f"1. Doğru Telaffuzu Dinleyin: {selected_brand_name}")
     st.caption(f"Bu markanın hedeflenen orijinal dil kökeni: **{LANG_MAP.get(brand_info['lang'], 'Global')}**")
     
-    if st.button("🔊 Doğru Okunuşu Seslendir", use_container_width=True):
+    if st.button("🔊 Doğru Okunuşu Dinle", use_container_width=True):
         tts = gTTS(text=selected_brand_name, lang=brand_info["lang"])
         filename = f"temp_{st.session_state.current_index}.mp3"
         tts.save(filename)
