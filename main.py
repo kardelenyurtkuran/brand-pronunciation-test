@@ -153,7 +153,7 @@ left_col, right_col = st.columns([1, 1], gap="large")
 
 with left_col:
     # --- LOGO ALANI (TELAFFUZ ALANININ TAM YANINDA OLMASI İÇİN SOL SÜTUNA ALINDI) ---
-    st.subheader("🖼️ Marka Logosu")
+    st.subheader("Marka Logosu")
     formatted_name = selected_brand_name.replace(".", "").replace("&", "").replace(" ", "_").lower()
     logo_path_png = os.path.join("logos", f"{formatted_name}_logo.png")
     logo_path_jpg = os.path.join("logos", f"{formatted_name}_logo.jpg")
