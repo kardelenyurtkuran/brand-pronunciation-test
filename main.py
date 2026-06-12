@@ -100,7 +100,7 @@ LANG_MAP = {
     "en": "İngilizce/Global 🇬🇧", "ja": "Japonca 🇯🇵", "tr": "Türkçe 🇹🇷"
 }
 
-st.set_page_config(page_title="Zorunlu Marka Telaffuz Testi", page_icon="🗣️", layout="wide")
+st.set_page_config(page_title="Zorunlu Marka Telaffuz", layout="wide")
 
 # --- 2. SESSION STATE (HAFIZA) AYARLARI ---
 if "current_index" not in st.session_state:
@@ -119,7 +119,7 @@ total_brands = len(brand_keys)
 if st.session_state.test_completed:
     st.balloons()
     st.title("🎉 Tebrikler! Test Tamamlandı")
-    st.success(f"Tüm {total_brands} markanın telaffuzunu başarıyla tamamladınız ve sertifikasyon sürecini geçtiniz!")
+    st.success(f"Tüm {total_brands} markanın telaffuzunu başarıyla tamamladınız ve sürecini geçtiniz!")
     st.info("💡 Testi bitirmek ve sonuçlarınızı kaydetmek için tarayıcı sekmesini kapatabilirsiniz.")
     if st.button("🔄 Testi Yeniden Başlat"):
         st.session_state.current_index = 0
@@ -133,11 +133,11 @@ selected_brand_name = brand_keys[st.session_state.current_index]
 brand_info = BRANDS[selected_brand_name]
 
 # --- 4. SAYAÇ VE GÖRSEL ARAYÜZ ---
-st.title("🗣️ Satış Ekibi Telaffuz Sertifikasyonu")
+st.title("Satış Ekibi Telaffuz Eğitimi")
 
 # --- GENEL SİSTEM YÖNERGESİ ---
 st.markdown("""
-> 📋 **Sertifikasyon Akış Kılavuzu:** > 1. Önce mevcut markanın **Doğru Okunuşunu Seslendir** butonuna basarak sistemi aktifleştirin ve kulaklıkla dinleyin.
+> 📋 **Sertifikasyon Akış Kılavuzu:** > 1. Önce mevcut markanın **Doğru Okunuşunu Seslendir** butonuna basarak sistemi aktifleştirin ve telaffuzu dinleyin.
 > 2. Ardından açılacak olan **Kendinizi Test Edin** alanındaki mikrofon simgesine basarak markanın adını söyleyin.
 > 3. %80 başarı oranını yakaladığınızda belirecek olan **Sonraki Markaya Geç** butonuyla ilerleyin.
 """)
@@ -219,7 +219,7 @@ with right_col:
                     similarity_ratio = SequenceMatcher(None, clean_user_said, clean_brand_name).ratio()
                     
                     # BAŞARI ORANI İSTEĞİNİZ ÜZERİNE %80'E YÜKSELTİLDİ
-                    if similarity_ratio >= 0.80:
+                    if similarity_ratio >= 0.85:
                         st.success(f"🎉 Harika! Yeterli telaffuz başarısı yakalandı. (Benzerlik Skoru: %{int(similarity_ratio*100)})")
                         
                         st.markdown("👇 Bir sonraki markaya ilerlemek için aşağıdaki butona tıklayın:")
@@ -232,7 +232,7 @@ with right_col:
                                 st.session_state.test_completed = True
                             st.rerun()
                     else:
-                        st.error(f"❌ Telaffuz tam eşleşmedi! İstenen baraj %80, sizin skorunuz: %{int(similarity_ratio*100)}")
+                        st.error(f"❌ Telaffuz tam eşleşmedi! İstenen baraj %85, sizin skorunuz: %{int(similarity_ratio*100)}")
                         st.caption(f"Beklenen Temel Kalıp: {selected_brand_name} | Sizin Söylediğiniz: {user_said}")
                         st.warning("🔄 Lütfen logoya bakın, doğru telaffuzu tekrar dinleyin ve mikrofona daha yakın konuşarak yeniden deneyin.")
                         
