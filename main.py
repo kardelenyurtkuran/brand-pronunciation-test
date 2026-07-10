@@ -8,6 +8,9 @@ from difflib import SequenceMatcher
 # --- 1. TÜM MARKA LİSTESİ VE DİLLERİ ---
 # İstekleriniz doğrultusunda yeni markalar eklendi, talep edilenler listeden çıkarıldı.
 BRANDS = {
+    "GMG Firenze": {"lang": "en"},
+    "Alberto Guardiani": {"lang": "it"},
+    "Salvatore Ferragamo": {"lang": "it"},
     "Armani Collezioni": {"lang": "it"},
     "Armani Exchange": {"lang": "it"},
     "Armani Jeans": {"lang": "it"},
