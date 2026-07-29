@@ -116,7 +116,11 @@ LANG_MAP = {
     "en": "İngilizce/Global 🇬🇧", "ja": "Japonca 🇯🇵", "tr": "Türkçe 🇹🇷"
 }
 
-st.set_page_config(page_title="Zorunlu Marka Telaffuz Eğitimi", layout="wide")
+st.set_page_config(
+    page_title="Zorunlu Marka Telaffuz Eğitimi", 
+    layout="wide",
+    initial_sidebar_state="collapsed"
+)
 
 # --- 2. VERİTABANI YARDIMCI MİMARİSİ (SUPABASE + LOCAL SQLITE FALLBACK) ---
 def get_db_connection():
