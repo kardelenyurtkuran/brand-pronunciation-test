@@ -256,7 +256,6 @@ if mode == "📊 Yönetici Rapor Paneli":
     
     admin_password = st.sidebar.text_input("Yönetici Parolası:", type="password")
     
-    # SAFE SECRETS READ (Hata Veren Kısım Düzeltildi)
     correct_password = "Exxe2026!"
     try:
         if "ADMIN_PASSWORD" in st.secrets:
@@ -335,25 +334,6 @@ if mode == "📊 Yönetici Rapor Paneli":
                 file_name=f"ik_telaffuz_raporu_{datetime.date.today()}.csv",
                 mime="text/csv"
             )
-
-    # 🧹 TEST & DENEME VERİLERİNİ SIFIRLAMA
-    st.divider()
-    with st.expander("⚙️ Yönetici Araçları: Test Verilerini Temizle / Sıfırla"):
-        st.warning("🚨 DİKKAT: Aşağıdaki buton, canlıya geçmeden önce yaptığınız TÜM deneme ve test kayıtlarını veritabanından kalıcı olarak siler!")
-        
-        confirm_reset = st.checkbox("Evet, tüm deneme verilerini silmek ve sistemi sıfırlamak istiyorum.")
-        if st.button("🗑️ TÜM TEST VERİLERİNİ SİL", type="primary", disabled=not confirm_reset):
-            db, db_type = get_db_connection()
-            if db_type == "supabase":
-                db.table("attempt_logs").delete().neq("id", 0).execute()
-                db.table("user_sessions").delete().neq("id", 0).execute()
-            else:
-                cursor = db.cursor()
-                cursor.execute("DELETE FROM attempt_logs")
-                cursor.execute("DELETE FROM user_sessions")
-                db.commit()
-            st.success("🎉 Tüm test verileri başarıyla temizlendi! Sistem gerçek personel katılımı için hazır.")
-            st.rerun()
 
     st.stop()
 
